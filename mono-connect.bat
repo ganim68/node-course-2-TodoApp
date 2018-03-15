@@ -1,0 +1,1 @@
+mongod --dpath d:\mongo-data
