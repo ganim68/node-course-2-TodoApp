@@ -8,5 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="define-lazy-prop-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="jasmine-data_driven_tests-DefinitelyTyped" level="application" />
   </component>
 </module>

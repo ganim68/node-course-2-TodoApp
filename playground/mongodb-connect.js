@@ -13,7 +13,7 @@ console.log(name);
 const url = 'mongodb://localhost:27017';
 
 // Database Name
-const dbName = 'Users';
+const dbName = 'TodoApp';
 
 //---------------------MongoDB Version 3.0.0 rc-0 ------------------
 //--------------------Use connect method to connect to the server--------------
@@ -27,15 +27,15 @@ MongoClient.connect(url, function(err, client) {
 
              //  Insert to "Todos"
 
-    // const collection = db.collection('Todos');
-    // collection.insertOne({
-    //     text : 'Someting to do' ,
-    //     completed : false
-    // } , (err,result) =>{
-    //     if(err)
-    //         return console.log('Unable to insert Todo , err);
-    //     console.log(JSON.stringify(result.ops , undefined ,2));
-    // });
+    const collection = db.collection('Todos');
+    collection.insertOne({
+        text : 'Someting to do' ,
+        completed : false
+    } , (err,result) =>{
+        if(err)
+            return console.log('Unable to insert Todo , err');
+        console.log(JSON.stringify(result.ops , undefined ,2));
+    });
 
              //  Insert to "Users"
     // const collection = db.collection(dbName);
