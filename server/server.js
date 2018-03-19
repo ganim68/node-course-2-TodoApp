@@ -1,9 +1,10 @@
 var express=require('express');
 var bodyParser=require('body-parser');
+const {ObjectID}= require('mongodb');
 
 var mongoose=require('./db/mongoose.js').mongoose;
-var Todo=require('./models/todo.js').Todo;
-var User= require('./models/user.js').User;
+var {Todo}=require('./models/todo.js');
+var {User}= require('./models/user.js');
 
 var Port=3001;
 
@@ -25,8 +26,25 @@ app.get('/todos',function (req,res) {
        res.send({todos});
     },function (e) {
         res.status(400).send(e);
-    })
-})
+    });
+});
+
+
+// GET todos
+app.get('/todos/:id',function (req ,res) {
+    var id = req.params.id;
+    if (!ObjectID.isValid(id))
+        return res.status(404).send('ID is not valid');
+    Todo.findById(id).then(function (todo) {
+        if(!todo)
+            return res.status(404).send('ID not found');
+        res.send({todo});
+    }).catch(function (e) {
+        res.status(400).send();
+    });
+});
+
+
 
 app.listen(Port,function () {
    console.log(`Start listening on port : ${Port}`);
