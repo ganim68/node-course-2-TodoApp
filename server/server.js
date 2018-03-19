@@ -1,14 +1,14 @@
-var express=require('express');
-var bodyParser=require('body-parser');
+const express=require('express');
+const bodyParser=require('body-parser');
 const {ObjectID}= require('mongodb');
 
-var mongoose=require('./db/mongoose.js').mongoose;
-var {Todo}=require('./models/todo.js');
-var {User}= require('./models/user.js');
+const mongoose=require('./db/mongoose.js').mongoose;
+const {Todo}=require('./models/todo.js');
+const {User}= require('./models/user.js');
 
-var Port=3001;
+const Port=3001;
 
-var app=express();
+const app=express();
 app.use(bodyParser.json());
 app.post('/todos',function (req ,res) {
     var todo=new Todo({

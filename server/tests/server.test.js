@@ -1,13 +1,15 @@
 const expect =require('expect');
 const request = require('supertest');
+const {ObjectID}=require('mongodb');
 
 const {app}=require('./../server');
 const {Todo}=require('./../models/todo.js');
-const toDos =[
-    {text :'First todo'},
-    {text :'Second todo'}
+
+var toDos =[
+    {_id : new ObjectID() ,text :'First todo'},
+    {_id : new ObjectID() ,text :'Second todo'}
 ];
-beforeEach(function (done) {
+/*beforeEach(function (done) {
     Todo.remove({}).then(function () {
       return Todo.insertMany(toDos);
    }).then(function () {
@@ -59,4 +61,31 @@ describe('POST/todos',function () {
                });
            });
    });
+});*/
+
+describe('GET /todo/:id',function () {
+    it('Should return todo doc',function (done) {
+        //this.timeout(10000);
+        request(app)
+            .get('/todos/5ab003e1c8539523389bf574')
+            .expect(200)
+            .expect(function (res) {
+                expect(res.body.todo.text).toBe(toDos[0].text);
+            })
+            .end(done);
+    });
+
+    it('Sould return 404 if todo not found',function (done) {
+        var hexId= new ObjectID().toHexString();
+        request(app)
+            .get(`/todos/${hexId}`)
+            .expect(404)
+            .end(done);
+    });
+    it('Sould return 404 for non-nobject ID',function (done) {
+        request(app)
+            .get('/todos/123')
+            .expect(404)
+            .end(done);
+    });
 });
