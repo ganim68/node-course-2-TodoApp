@@ -6,7 +6,7 @@ const mongoose=require('./db/mongoose.js').mongoose;
 const {Todo}=require('./models/todo.js');
 const {User}= require('./models/user.js');
 
-const Port=3001;
+const Port=process.env.PORT||3001;
 
 const app=express();
 app.use(bodyParser.json());
@@ -44,6 +44,19 @@ app.get('/todos/:id',function (req ,res) {
     });
 });
 
+// Delelte todos
+app.delete('/todos/:id',function (req,res) {
+    var id = req.params.id;                     //get te ID from tha URL
+    if (!ObjectID.isValid(id))                  //Check if the ID is valid
+        return res.status(404).send('ID is not valid');
+    Todo.findByIdAndRemove(id).then(function (todo) {
+        if(!todo)
+            return res.status(404).send('ID not found');
+        res.send({todo});
+    }).catch(function (e) {
+        res.status(400).send();
+    });
+    }) ;
 
 
 app.listen(Port,function () {
