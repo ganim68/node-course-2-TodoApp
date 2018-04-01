@@ -61,7 +61,7 @@ app.delete('/todos/:id',function (req,res) {
 //Update todos
 app.patch('/todos/:id',function (req,res) {
     var id = req.params.id;                     //get te ID from tha URL
-    var body = _.pick(req.body , ['texe', 'completed']);
+    var body = _.pick(req.body , ['text', 'completed']);
     if (!ObjectID.isValid(id))                  //Check if the ID is valid
         return res.status(404).send('ID is not valid');
     if (_.isBoolean(body.completed) && body.completed)
