@@ -11,17 +11,33 @@ const Port=process.env.PORT||3001;
 
 const app=express();
 app.use(bodyParser.json());
+
+//POST (Create) todos
 app.post('/todos',function (req ,res) {
-    var todo=new Todo({
-        text : req.body.text
+    var todo = new Todo({
+        text: req.body.text
     });
     todo.save().then(function (doc) {
         res.send(doc);
+    }).catch(function (e) {
+        res.status(400).send(e);
     })
-},function (e) {
-    res.status(400).send(e);
 });
 
+//POST (Create) users
+app.post('/users',function (req ,res) {
+    var body = _.pick(req.body , ['email', 'password']);
+    var user=new User(body);
+    user.save().then(function () {
+        return user.generateAuthToken();
+           }).then((token)=>{
+        res.header('x-auth',token).send(user);
+    }).catch(function (e) {
+        res.status(400).send(e);
+    })
+});
+
+// GET all todos
 app.get('/todos',function (req,res) {
     Todo.find().then(function (todos) {
        res.send({todos});
@@ -31,7 +47,7 @@ app.get('/todos',function (req,res) {
 });
 
 
-// GET todos
+// GET todos by ID
 app.get('/todos/:id',function (req ,res) {
     var id = req.params.id;
     if (!ObjectID.isValid(id))

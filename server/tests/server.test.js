@@ -89,3 +89,27 @@ describe('GET /todo/:id',function () {
             .end(done);
     });
 });
+
+describe('PATCH/todos/:id',function () {
+    it('Should update todo',function (done) {
+       var hexId = '5ab14d57d6c7e8148446a1e7';
+       var text ='the text after update';
+       request(app)
+           .patch(`/todos/5ab14d57d6c7e8148446a1e7`)
+           .send({
+               completed : true ,
+               text
+           })
+           .expect(200)
+           .expect(function (res) {
+             expect(res.body.todo.text).toBe(text);
+             expect(res.body.todo.completed).toBe(true);
+             expect(res.body.todo.completedAt).toBeA('number');
+           })
+           .end(done);
+    });
+
+    it('Should clear comletedAt when todo is not completed',function (done) {
+        
+    })
+});
