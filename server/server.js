@@ -6,6 +6,7 @@ const {ObjectID}= require('mongodb');
 const mongoose=require('./db/mongoose.js').mongoose;
 const {Todo}=require('./models/todo.js');
 const {User}= require('./models/user.js');
+const {authenticate} = require('./middleware/authenticate');
 
 const Port=process.env.PORT||3001;
 
@@ -21,7 +22,7 @@ app.post('/todos',function (req ,res) {
         res.send(doc);
     }).catch(function (e) {
         res.status(400).send(e);
-    })
+    });
 });
 
 //POST (Create) users
@@ -35,6 +36,11 @@ app.post('/users',function (req ,res) {
     }).catch(function (e) {
         res.status(400).send(e);
     })
+});
+
+//Get/users/me
+app.get('/users/me',authenticate,function (req,res) {
+    res.send(req.user);
 });
 
 // GET all todos
